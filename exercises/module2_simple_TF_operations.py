@@ -1,5 +1,4 @@
 # Module 2: Basic TF Operations
-
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
@@ -11,12 +10,12 @@ sess = tf.Session()
 # a = tf.constant(1)
 # b = tf.constant(2)
 # c = tf.constant(3)
-
+#
 # sess = tf.Session()
 # print(sess.run(a))
 # print(sess.run(b))
 # print(sess.run(c))
-
+#
 # with tf.Session() as sess:
 # 	print(sess.run(a))
 # 	print(sess.run(b))
@@ -27,12 +26,18 @@ sess = tf.Session()
 # b = tf.constant(3)
 # c = tf.add(a,b)
 # c = tf.subtract(a,b)
-# c = a*b
+# c = tf.multiply(a,b)
 # c = tf.div(a,b)
 # c = tf.truediv(a, b)
 # c = tf.floordiv(a, b)
 # c = tf.mod(a, b)
 # print(sess.run(c))
+
+# tensor `a` is [1.8, 2.2], dtype=tf.float
+# a = tf.constant(1.8,dtype=tf.float32)
+# b = tf.cast(a, tf.int32)
+# print(sess.run(a))
+# print(sess.run(b))
 
 # Math Functions
 # print(sess.run(tf.square(2)))
@@ -46,7 +51,7 @@ sess = tf.Session()
 # a = tf.linspace(-1., 1., 10)
 # print(sess.run(a))
 
-# Exercises	
+# Exercises
 
 # a = tf.constant([[1,1]],tf.float32)
 # w = tf.constant([[1,2],[3,4]],tf.float32)
@@ -54,18 +59,13 @@ sess = tf.Session()
 # y = tf.add(tf.matmul(a,w),b)
 # print(sess.run(y))
 
-# with tf.Session() as sess:
-# 	print(sess.run(a))
-# 	print(sess.run(b))
-# 	print(sess.run(c))		
-
 # a = tf.constant([
 # 				[1,2],
 # 				[3,4],
 # 				[5,6]])
 # print(sess.run(a))
 
-# Matrix
+# Basic Matrix Operations
 # a = tf.constant([[1,2],[3,4]])
 # b = tf.constant([[4,3],[2,1]])
 # c = tf.add(a,b)
@@ -74,12 +74,20 @@ sess = tf.Session()
 # print(sess.run(c))
 # tf.cross([1, 0, 0], [0, 1, 0])
 
-# Special Matrics
+# Matrix Sum Operation
+# a = tf.constant(
+# 		[[1,1,1],
+# 		 [2,2,2]]
+#       )
+# print(sess.run(tf.reduce_sum(a)))
+# print(sess.run(tf.reduce_sum(a, 0)))
+# print(sess.run(tf.reduce_sum(a, 1)))
+
+# Special Matrices
 # a = tf.zeros([2,3])
 # a = tf.ones([2,3])
 # a = tf.diag(np.ones(2))
 # a = tf.fill([2,3],2)
-# a = tf.random_uniform([2,3])
 # print(sess.run(a))
 
 # Random Numbers
@@ -88,6 +96,7 @@ sess = tf.Session()
 # a = tf.random_uniform([1])
 # a = tf.random_shuffle([1,2,3,4])
 # print(sess.run(a))
+# sess.close()
 
 # Placeholder
 # a = tf.placeholder(tf.float32)
@@ -106,19 +115,7 @@ sess = tf.Session()
 #     a:[[1,1]],
 #     w:[[1,2],[3,4]]})
 #       )
-
-
-# sess = tf.Session()
-# sess.run(tf.global_variables_initializer())
-# result = sess.run(y, feed_dict ={x:np.array([[1.0, 2.0, 3.0]])})
-
-# print(result)
-
-# Exercise
-# c = tf.placeholder(tf.float32)
-# sum_mul = tf.mul(sum,c)
-# print(sess.run(sum_mul,{a:3,b:4,c:5}))
-
+#
 # x = tf.placeholder(tf.float32,shape=(2,2))
 # y = tf.add(tf.matmul(x,x),x)
 # print(sess.run(y,feed_dict={x:[[1,1],[1,1]]}))
@@ -128,7 +125,7 @@ sess = tf.Session()
 # b = tf.Variable([-1.], tf.float32)
 # x = tf.placeholder(tf.float32)
 # y = W * x + b
-
+#
 # init = tf.global_variables_initializer()
 # sess.run(init)
 # print(sess.run(y, {x:[1,2,3,4]}))
