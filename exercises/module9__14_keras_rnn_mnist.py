@@ -4,9 +4,9 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, SimpleRNN, LSTM,GRU
+from tensorflow.python import keras
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense, SimpleRNN, LSTM,GRU
 
 batch_size = 28
 n_classes = 10
@@ -14,10 +14,10 @@ epochs = 20
 hidden_units = 28
 
 # Step 1 Preprocess data
-from keras.datasets import mnist
+from tensorflow.python.keras.datasets import mnist
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
-X_train = X_train.reshape(X_train.shape[0], -1, 1)
-X_test = X_test.reshape(X_test.shape[0], -1, 1)
+X_train = X_train.reshape(X_train.shape[0], 784)
+X_test = X_test.reshape(X_test.shape[0], 784)
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
 X_train /= 255

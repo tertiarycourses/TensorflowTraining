@@ -29,8 +29,8 @@ inp = tf.unstack(X, axis=1)
 # cell = rnn.BasicRNNCell(rnn_size) # Simple RNN  Cell
 # H = rnn.static_rnn(cell, inp, dtype=tf.float32)
 
-# cell = rnn.BasicLSTMCell(rnn_size) # LSTM Cell
-cell = rnn.GRUCell(rnn_size) # GRU Cell
+cell = rnn.BasicLSTMCell(rnn_size) # LSTM Cell
+#cell = rnn.GRUCell(rnn_size) # GRU Cell
 H, C = rnn.static_rnn(cell, inp, dtype=tf.float32)
 
 Ylogits = tf.matmul(H[-1], W) + B

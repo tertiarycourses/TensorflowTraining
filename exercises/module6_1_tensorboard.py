@@ -3,7 +3,7 @@
 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
-logdir = '/users/alfred/Desktop/tmp'
+logdir = 'viz'
 
 import tensorflow as tf
 

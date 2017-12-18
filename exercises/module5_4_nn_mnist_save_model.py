@@ -1,5 +1,5 @@
 # Module 5: Neural Network and Deep Learning
-# NN model for MNIST dataset and save model
+# Save Model
 
 import tensorflow as tf
 import os
@@ -10,6 +10,7 @@ learning_rate = 0.5
 training_epochs = 2
 batch_size = 100
 tf.set_random_seed(25)
+model_file="../nn.pkl"
 
 # Step 1: Initial Setup
 from tensorflow.examples.tutorials.mnist import input_data
@@ -35,10 +36,6 @@ W5 = tf.Variable(tf.truncated_normal([L4, 10], stddev=0.1))
 B5 = tf.Variable(tf.truncated_normal([10],stddev=0.1))
 
 # Step 2: Setup Model
-# Y1 = tf.nn.sigmoid(tf.matmul(X, W1) + B1)
-# Y2 = tf.nn.sigmoid(tf.matmul(Y1, W2) + B2)
-# Y3 = tf.nn.sigmoid(tf.matmul(Y2, W3) + B3)
-# Y4 = tf.nn.sigmoid(tf.matmul(Y3, W4) + B4)
 Y1 = tf.nn.relu(tf.matmul(X, W1) + B1)
 Y2 = tf.nn.relu(tf.matmul(Y1, W2) + B2)
 Y3 = tf.nn.relu(tf.matmul(Y2, W3) + B3)
@@ -46,13 +43,13 @@ Y4 = tf.nn.relu(tf.matmul(Y3, W4) + B4)
 Ylogits = tf.matmul(Y4, W5) + B5
 yhat = tf.nn.softmax(Ylogits)
 
+
 # Step 3: Loss Functions
 loss = tf.reduce_mean(
    tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=Ylogits))
 
 # Step 4: Optimizer
 optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-#optimizer = tf.train.AdamOptimizer()
 train = optimizer.minimize(loss)
 
 # accuracy of the trained model, between 0 (worst) and 1 (best)
@@ -73,6 +70,9 @@ for epoch in range(training_epochs):
 
         print(epoch*num_batches+i+1, "Training accuracy =", sess.run(accuracy, feed_dict=train_data),
               "Loss =", sess.run(loss, feed_dict=train_data))
+
+saver = tf.train.Saver()
+saver.save(sess, model_file)
 
 # Step 6: Evaluation
 test_data = {X:mnist.test.images,y:mnist.test.labels}

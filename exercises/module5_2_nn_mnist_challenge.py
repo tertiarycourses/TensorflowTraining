@@ -1,6 +1,7 @@
 # Module 5: Neural Network and Deep Learning
 # NN model for MNIST dataset and save model
 
+import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
@@ -8,15 +9,12 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 learning_rate = 0.5
 training_epochs = 2
 batch_size = 100
-model_file = "mnist-demo.pkl"
-
-import tensorflow as tf
 tf.set_random_seed(25)
 
+# Step 1: Initial Setup
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("mnist", one_hot=True)
 
-# Step 1: Initial Setup
 X = tf.placeholder(tf.float32, [None, 784])
 y = tf.placeholder(tf.float32, [None, 10])
 
@@ -27,17 +25,17 @@ L4 = 30
 L5 = 30
 
 W1 = tf.Variable(tf.truncated_normal([784, L1], stddev=0.1))
-B1 = tf.Variable(tf.zeros([L1]))
+B1 = tf.Variable(tf.truncated_normal([L1],stddev=0.1))
 W2 = tf.Variable(tf.truncated_normal([L1, L2], stddev=0.1))
-B2 = tf.Variable(tf.zeros([L2]))
+B2 = tf.Variable(tf.truncated_normal([L2],stddev=0.1))
 W3 = tf.Variable(tf.truncated_normal([L2, L3], stddev=0.1))
-B3 = tf.Variable(tf.zeros([L3]))
+B3 = tf.Variable(tf.truncated_normal([L3],stddev=0.1))
 W4 = tf.Variable(tf.truncated_normal([L3, L4], stddev=0.1))
-B4 = tf.Variable(tf.zeros([L4]))
+B4 = tf.Variable(tf.truncated_normal([L4],stddev=0.1))
 W5 = tf.Variable(tf.truncated_normal([L4, L5], stddev=0.1))
-B5 = tf.Variable(tf.zeros([L5]))
+B5 = tf.Variable(tf.truncated_normal([L5],stddev=0.1))
 W6 = tf.Variable(tf.truncated_normal([L5, 10], stddev=0.1))
-B6 = tf.Variable(tf.zeros([10]))
+B6 = tf.Variable(tf.truncated_normal([10],stddev=0.1))
 
 # Step 2: Setup Model
 # Y1 = tf.nn.sigmoid(tf.matmul(X, W1) + B1)
@@ -79,9 +77,6 @@ for epoch in range(training_epochs):
 
         print(epoch*num_batches+i+1, "Training accuracy =", sess.run(accuracy, feed_dict=train_data),
               "Loss =", sess.run(loss, feed_dict=train_data))
-
-saver = tf.train.Saver()
-saver.save(sess, model_file)
 
 # Step 6: Evaluation
 test_data = {X:mnist.test.images,y:mnist.test.labels}

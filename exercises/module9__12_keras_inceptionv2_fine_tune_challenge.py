@@ -4,9 +4,9 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-from keras.applications.inception_v3 import InceptionV3
-from keras.models import Model
-from keras.layers import Dense, GlobalAveragePooling2D, Input
+from tensorflow.python.keras.applications.inception_v3 import InceptionV3
+from tensorflow.python.keras.models import Model
+from tensorflow.python.keras.layers import Dense, GlobalAveragePooling2D, Input
 
 import tflearn.datasets.oxflower17 as oxflower17
 from sklearn.model_selection import train_test_split

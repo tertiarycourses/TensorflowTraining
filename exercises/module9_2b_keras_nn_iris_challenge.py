@@ -1,6 +1,10 @@
 # Module 9 Keras
 # Challenge: NN on Iris dataset
 
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
+from tensorflow.python.keras import optimizers
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
@@ -8,12 +12,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 n_features = 4
 n_classes = 3
 learning_rate = 0.08
-training_epochs = 50
-logdir = '/tmp/iris/1'
-
-import keras
-from keras.layers import Dense, Activation
-from keras.models import Sequential
+training_epochs = 100
 
 # Step 1: Preprocess the  Data
 import numpy as np
@@ -39,25 +38,21 @@ model.add(Dense(L1, input_dim=n_features, activation='relu'))
 model.add(Dense(L2, activation='relu'))
 model.add(Dense(L3, activation='relu'))
 model.add(Dense(n_classes, activation='softmax'))
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-logger = keras.callbacks.TensorBoard(
-    log_dir='temp/keras',
-    histogram_freq=4,
-    write_graph=True
-)
+print(model.summary())
 
-# Step 3: Training
-model.fit(X_train,
-          y_train,
+# Step 3: Compile the Model
+model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+
+# Step 4: Train Model
+model.fit(X_train, y_train,
           epochs=training_epochs,
-          verbose=2,
-          callbacks = [logger]
-          )
+          validation_data=(X_test, y_test),
+          shuffle=True)
 
-# Step 4: Evaluation
+# Step 5: Evaluation
 score = model.evaluate(X_test, y_test)
 print("\nTraining Accuracy = ",score[1],"Loss",score[0])
 
-#from keras.models import load_model
-model.save("trained_model_iris.h5")
+# Step 6: Save the model
+model.save("iris.h5")

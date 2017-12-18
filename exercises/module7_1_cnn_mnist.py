@@ -52,10 +52,10 @@ B5 = tf.Variable(tf.zeros([10]))
 Y1 = tf.nn.relu(tf.nn.conv2d(X, W1, strides=[1,1,1,1], padding='SAME') + B1)# output is 28x28
 Y2 = tf.nn.relu(tf.nn.conv2d(Y1, W2, strides=[1,1,1,1], padding='SAME') + B2)
 Y2 = tf.nn.max_pool(Y2, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME') # output is 14x14
-Y2= tf.nn.dropout(Y2, pkeep)
+#Y2= tf.nn.dropout(Y2, pkeep)
 Y3 = tf.nn.relu(tf.nn.conv2d(Y2, W3, strides=[1,1,1,1], padding='SAME') + B3)
 Y3 = tf.nn.max_pool(Y3, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME') # output is 7x7
-Y3= tf.nn.dropout(Y3, pkeep)
+#Y3= tf.nn.dropout(Y3, pkeep)
 
 # Flatten the third convolution for the fully connected layer
 YY = tf.reshape(Y3, shape=[-1, 7 * 7 * L3])

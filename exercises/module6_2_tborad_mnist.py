@@ -1,17 +1,18 @@
 # Module 6: Tensorboard
 # Author: Dr. Alfred Ang
-# Challange: Restore model
+# Tensorboard MNIST data
 
+import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 # Parameters
-learning_rate = 0.5
+learning_rate = 0.01
 training_epochs = 2
 batch_size = 100
-logdir = '/users/alfred/Desktop/mnist/adam2'
+logdir = 'viz2/relu'
 
-import tensorflow as tf
+
 tf.set_random_seed(25)
 
 from tensorflow.examples.tutorials.mnist import input_data
@@ -41,6 +42,10 @@ with tf.name_scope('Variables'):
 
 # Step 2: Setup Model
 with tf.name_scope('Model'):
+    # Y1 = tf.nn.sigmoid(tf.matmul(X, W1) + B1)
+    # Y2 = tf.nn.sigmoid(tf.matmul(Y1, W2) + B2)
+    # Y3 = tf.nn.sigmoid(tf.matmul(Y2, W3) + B3)
+    # Y4 = tf.nn.sigmoid(tf.matmul(Y3, W4) + B4)
     Y1 = tf.nn.relu(tf.matmul(X, W1) + B1)
     Y2 = tf.nn.relu(tf.matmul(Y1, W2) + B2)
     Y3 = tf.nn.relu(tf.matmul(Y2, W3) + B3)
@@ -56,7 +61,7 @@ with tf.name_scope('Loss'):
 # Step 4: Optimizer
 with tf.name_scope('Train'):
     #optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-    optimizer = tf.train.AdamOptimizer(0.01)
+    optimizer = tf.train.AdamOptimizer(learning_rate)
     train = optimizer.minimize(loss)
 
 # accuracy of the trained model, between 0 (worst) and 1 (best)

@@ -1,28 +1,26 @@
 # Module 4: Simple TF Model
 # Simple TF model on MINST dataset
 
+import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 # Parameters
 learning_rate = 0.008
 batch_size = 100
-model_file = "mnist.ckpt"
-
-import tensorflow as tf
 tf.set_random_seed(25)
 
+# Step 1: Initial Setup
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("mnist", one_hot=True)
 
-# Step 1: Initial Setup
 X = tf.placeholder(tf.float32, [None, 784])
+y = tf.placeholder(tf.float32, [None, 10])
 W = tf.Variable(tf.truncated_normal([784, 10],stddev=0.1))
-b = tf.Variable(tf.zeros([10]))
+b = tf.Variable(tf.truncated_normal([10],stddev=0.1))
 
 # Step 2: Setup Model
 yhat = tf.nn.softmax(tf.matmul(X,W)+b)
-y = tf.placeholder(tf.float32, [None, 10]) # placeholder for correct answers
 
 # Step 3: Cross Entropy Loss Functions
 loss = -tf.reduce_sum(y*tf.log(yhat))

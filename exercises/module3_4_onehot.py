@@ -15,8 +15,15 @@ b = np.eye(num_labels)[a]
 print(b)
 
 # One Hot Decoding
+
+# c = tf.constant([0,0,0,1])
+# c = tf.argmax(a)
+
 c = tf.argmax(b,axis=1)
 print(sess.run(c))
+
+
+
 
 
 

@@ -1,15 +1,18 @@
+# Module 9 Keras
+# RESNET Transfer Learning
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 import numpy as np
-from keras.preprocessing import image
-from keras.applications.resnet50 import ResNet50
-from keras.applications.resnet50 import preprocess_input,decode_predictions
+
+from tensorflow.python.keras.preprocessing import image
+from tensorflow.python.keras.applications.resnet50 import ResNet50
+from tensorflow.python.keras.applications.resnet50 import preprocess_input,decode_predictions
 
 # Step 1: Preprocess data
-
 # Load the image file, resizing it to 224x224 pixels (required by this model)
-img = image.load_img("../images/car-224.jpg", target_size=(224, 224))
+img = image.load_img("images/merlion-224.jpg", target_size=(224, 224))
 
 # Convert the image to a numpy array
 x = image.img_to_array(img)

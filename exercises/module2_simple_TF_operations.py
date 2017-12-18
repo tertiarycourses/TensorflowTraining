@@ -7,11 +7,12 @@ import tensorflow as tf
 import numpy as np
 sess = tf.Session()
 
-# Constants
+# Step 1: Build the Graph
 # a = tf.constant(1)
 # b = tf.constant(2)
 # c = tf.constant(3)
 #
+# Step 2: Execute the Graph
 # sess = tf.Session()
 # print(sess.run(a))
 # print(sess.run(b))
@@ -22,7 +23,7 @@ sess = tf.Session()
 # 	print(sess.run(b))
 # 	print(sess.run(c))
 
-# Math Operations
+# TF Math Operations
 # a = tf.constant(2)
 # b = tf.constant(3)
 # c = tf.add(a,b)
@@ -33,6 +34,14 @@ sess = tf.Session()
 # c = tf.floordiv(a, b)
 # c = tf.mod(a, b)
 # print(sess.run(c))
+
+# Cannot mix data types
+# a = 4
+# b = 5.6
+# print(a*b)
+# a = tf.constant(4,dtype=tf.float32)
+# b = tf.constant(5.6,dtype=tf.float32)
+# c = tf.multiply(a,b)
 
 # tensor `a` is [1.8, 2.2], dtype=tf.float
 # a = tf.constant(1.8,dtype=tf.float32)
@@ -73,9 +82,9 @@ sess = tf.Session()
 # c = tf.transpose(a)
 # c = tf.matmul(a,b)
 # print(sess.run(c))
-# tf.cross([1, 0, 0], [0, 1, 0])
 
-# Matrix Sum Operation
+
+# Reduced Sum and Mean Operations
 # a = tf.constant(
 # 		[[1,1,1],
 # 		 [2,2,2]]
@@ -93,9 +102,8 @@ sess = tf.Session()
 
 # Random Numbers
 # tf.set_random_seed(2)
-# a = tf.random_normal([1])
-# a = tf.random_uniform([1])
-# a = tf.random_shuffle([1,2,3,4])
+# a = tf.random_normal([2,3])
+# a = tf.truncated_normal([2,3])
 # print(sess.run(a))
 # sess.close()
 
