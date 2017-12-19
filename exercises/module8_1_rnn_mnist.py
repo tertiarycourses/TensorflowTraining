@@ -38,7 +38,6 @@ loss = tf.reduce_mean(
 
 # Step 4: Optimizer
 optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-# optimizer = tf.train.AdamOptimizer(0.01)
 train = optimizer.minimize(loss)
 
 # accuracy of the trained model, between 0 (worst) and 1 (best)

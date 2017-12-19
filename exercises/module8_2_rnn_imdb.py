@@ -17,6 +17,7 @@ embedding_size = 128
 rnn_size = 128
 max_features = 20000
 max_len = 80
+learning_rate = 0.5
 
 # Step 1: Pre-process data
 (X_train, y_train), (X_test, y_test) = imdb.load_data(num_words=max_features)
@@ -36,11 +37,11 @@ W = tf.Variable(tf.random_normal([rnn_size, n_classes]))
 B = tf.Variable(tf.random_normal([n_classes]))
 
 embeddings = tf.Variable(tf.random_uniform([max_features, embedding_size], -1.0, 1.0))
-x_embedded = tf.nn.embedding_lookup(embeddings, X)
-x_embedded = tf.unstack(x_embedded, axis=1)
 
 # Step 2: Setup Model
 
+x_embedded = tf.nn.embedding_lookup(embeddings, X)
+x_embedded = tf.unstack(x_embedded, axis=1)
 cell = rnn.BasicLSTMCell(rnn_size)
 H, C = rnn.static_rnn(cell, x_embedded, dtype=tf.float32)
 
@@ -52,8 +53,7 @@ loss = tf.reduce_mean(
    tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=Ylogits))
 
 # Step 4: Optimizer
-#optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-optimizer = tf.train.AdamOptimizer()
+optimizer = tf.train.GradientDescentOptimizer(learning_rate)
 train = optimizer.minimize(loss)
 
 is_correct = tf.equal(tf.argmax(y,1),tf.argmax(yhat,1))
