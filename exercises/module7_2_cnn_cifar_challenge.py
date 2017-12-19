@@ -1,8 +1,8 @@
 # Module 7: Convolutional Neural Network (CNN)
 # Challenge : CIFAR-10 dataset
 
+import tensorflow as tf
 import os
-
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Parameters
@@ -10,15 +10,16 @@ learning_rate = 0.01
 training_epochs = 1
 batch_size = 100
 
-import tensorflow as tf
-from tflearn.datasets import cifar10
-
-from tflearn.data_utils import to_categorical
-(X_train, Y_train), (X_test, Y_test) = cifar10.load_data()
-Y_train = to_categorical(Y_train, 10)
-Y_test = to_categorical(Y_test, 10)
-
 # Step 1: Initial Setup
+from tensorflow.python.keras.datasets import cifar10
+(X_train, y_train), (X_test, y_test) = cifar10.load_data()
+X_train = X_train.astype('float32')
+X_test = X_test.astype('float32')
+X_train = X_train / 255.0
+X_test = X_test / 255.0
+y_train = keras.utils.to_categorical(y_train, n_classes)
+y_test = keras.utils.to_categorical(y_test, n_classes)
+
 X = tf.placeholder(tf.float32, [None, 32, 32, 3])
 y = tf.placeholder(tf.float32, [None, 10])
 pkeep = tf.placeholder(tf.float32)
@@ -30,13 +31,13 @@ L2 = 64  # second convolutional layer output depth
 L3 = 1024   # Fully connected layer
 
 W1 = tf.Variable(tf.truncated_normal([5, 5, 3, L1], stddev=0.1))
-B1 = tf.Variable(tf.zeros([L1]))
+B1 = tf.Variable(tf.truncated_normal([L1],stddev=0.1))
 W2 = tf.Variable(tf.truncated_normal([3, 3, L1, L2], stddev=0.1))
-B2 = tf.Variable(tf.zeros([L2]))
+B2 = tf.Variable(tf.truncated_normal([L2],stddev=0.1))
 W3 = tf.Variable(tf.truncated_normal([8 * 8 * L2, L3], stddev=0.1))
-B3 = tf.Variable(tf.zeros([L3]))
+B3 = tf.Variable(tf.truncated_normal([L3],stddev=0.1))
 W4 = tf.Variable(tf.truncated_normal([L3, 10], stddev=0.1))
-B4 = tf.Variable(tf.zeros([10]))
+B4 = tf.Variable(tf.truncated_normal([10],stddev=0.1))
 
 # Step 2: Setup Model
 Y1 = tf.nn.relu(tf.nn.conv2d(X, W1, strides=[1, 1, 1, 1], padding='SAME') + B1)

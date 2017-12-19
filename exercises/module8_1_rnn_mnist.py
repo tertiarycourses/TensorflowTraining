@@ -1,17 +1,17 @@
 # Module 8: Recurrent Neural Network
 # RNN model for MNIST dataset
 
+import tensorflow as tf
+from tensorflow.contrib import rnn
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 # Parameters
 learning_rate = 0.5
-training_epochs = 2
-batch_size = 100
-rnn_size = 128
-
-import tensorflow as tf
-from tensorflow.contrib import rnn
+training_epochs = 1
+batch_size = 28
+rnn_size = 28
 
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("mnist", one_hot=True)
@@ -20,14 +20,11 @@ mnist = input_data.read_data_sets("mnist", one_hot=True)
 X = tf.placeholder(tf.float32, [None, 28, 28])
 y = tf.placeholder(tf.float32)
 
-W = tf.Variable(tf.random_normal([rnn_size, 10]))
-B = tf.Variable(tf.random_normal([10]))
+W = tf.Variable(tf.truncated_normal([rnn_size, 10],stddev=0.1))
+B = tf.Variable(tf.truncated_normal([10],stddev=0.1))
 
 # Step 2: Setup Model
 inp = tf.unstack(X, axis=1)
-
-# cell = rnn.BasicRNNCell(rnn_size) # Simple RNN  Cell
-# H = rnn.static_rnn(cell, inp, dtype=tf.float32)
 
 cell = rnn.BasicLSTMCell(rnn_size) # LSTM Cell
 #cell = rnn.GRUCell(rnn_size) # GRU Cell
@@ -55,12 +52,14 @@ sess.run(init)
 
 # Step 5: Training Loop
 for epoch in range(training_epochs):
-    for i in range(int(mnist.train.num_examples/batch_size)):
+    num_batches = int(mnist.train.num_examples / batch_size)
+    for i in range(num_batches):
         batch_X, batch_y = mnist.train.next_batch(batch_size)
         batch_X = batch_X.reshape((batch_size, 28, 28))
         train_data = {X: batch_X, y: batch_y}
         sess.run(train, feed_dict=train_data)
-        print("Training Accuracy = ", sess.run(accuracy, feed_dict=train_data))
+        print(epoch * num_batches + i + 1, "Training accuracy =", sess.run(accuracy, feed_dict=train_data),
+          "Loss =", sess.run(loss, feed_dict=train_data))
 
 # Step 6: Evaluation
 test_X = mnist.test.images

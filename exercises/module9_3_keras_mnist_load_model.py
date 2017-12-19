@@ -13,16 +13,13 @@ n_features = 784
 n_classes = 10
 
 # Step 1: Pre-process the  Data
-from tensorflow.python.keras.datasets import mnist
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
-X_train = X_train.reshape(X_train.shape[0], 784)
-X_test = X_test.reshape(X_test.shape[0], 784)
-X_train = X_train.astype('float32')
-X_test = X_test.astype('float32')
-X_train /= 255
-X_test /= 255
-y_train = keras.utils.to_categorical(y_train, n_classes)
-y_test = keras.utils.to_categorical(y_test, n_classes)
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("mnist", one_hot=True)
+
+X_train = mnist.train.images
+y_train = mnist.train.labels
+X_test = mnist.test.images
+y_test = mnist.test.labels
 
 model = load_model('mnist.h5')
 

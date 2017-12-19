@@ -12,20 +12,17 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 # Parameters
 n_classes = 10
 learning_rate = 0.5
-training_epochs = 2
+training_epochs = 1
 batch_size = 100
 
 # Step 1 Load the Data
-from tensorflow.python.keras.datasets import mnist
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
-X_train = X_train.reshape(-1, 28, 28, 1)
-X_test = X_test.reshape(-1, 28, 28, 1)
-X_train = X_train.astype('float32')
-X_test = X_test.astype('float32')
-X_train /= 255
-X_test /= 255
-y_train = keras.utils.to_categorical(y_train, n_classes)
-y_test = keras.utils.to_categorical(y_test, n_classes)
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("mnist", one_hot=True)
+
+X_train = mnist.train.images.reshape(-1,28,28,1)
+y_train = mnist.train.labels
+X_test = mnist.test.images.reshape(-1,28,28,1)
+y_test = mnist.test.labels
 
 # Step 2: Build the Network
 model = Sequential()
@@ -38,16 +35,18 @@ model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(n_classes, activation='softmax'))
-print(model.summary())
+#print(model.summary())
 
 # Step 3: Compile the Model
-model.compile(loss='binary_crossentropy', optimizer='adam',metrics=['accuracy'])
+model.compile(optimizer='adam',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
 
 # Step 4: Training
 model.fit(X_train, y_train,
-          epochs=training_epochs)
+          epochs=training_epochs,
+          validation_data=[X_test,y_test])
 
 # Step 4: Evaluation
 score = model.evaluate(X_test, y_test)
-print('Test loss:', score[0])
 print('Test accuracy:', score[1])

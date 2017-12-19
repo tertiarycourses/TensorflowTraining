@@ -12,7 +12,7 @@ from tensorflow.python.keras.applications.resnet50 import preprocess_input,decod
 
 # Step 1: Preprocess data
 # Load the image file, resizing it to 224x224 pixels (required by this model)
-img = image.load_img("images/merlion-224.jpg", target_size=(224, 224))
+img = image.load_img("images/merlion-299.jpg", target_size=(224, 224))
 
 # Convert the image to a numpy array
 x = image.img_to_array(img)

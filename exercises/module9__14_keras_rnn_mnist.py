@@ -1,55 +1,41 @@
 # Module 9 Keras
 # RNN Model on MNIST dataaset
 
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
-
+import tensorflow as tf
 from tensorflow.python import keras
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, SimpleRNN, LSTM,GRU
 
-batch_size = 28
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
 n_classes = 10
-epochs = 20
-hidden_units = 28
+epochs = 2
+rnn_units = 28
 
 # Step 1 Preprocess data
-from tensorflow.python.keras.datasets import mnist
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
-X_train = X_train.reshape(X_train.shape[0], 784)
-X_test = X_test.reshape(X_test.shape[0], 784)
-X_train = X_train.astype('float32')
-X_test = X_test.astype('float32')
-X_train /= 255
-X_test /= 255
-y_train = keras.utils.to_categorical(y_train, n_classes)
-y_test = keras.utils.to_categorical(y_test, n_classes)
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("mnist", one_hot=True)
+
+X_train = mnist.train.images.reshape(-1,28,28)
+y_train = mnist.train.labels
+X_test = mnist.test.images.reshape(-1,28,28)
+y_test = mnist.test.labels
 
 # Step 2 Create the Model
 model = Sequential()
 
-# Simple RNN Cell
-# model.add(SimpleRNN(hidden_units,
-#                     activation='relu',
-#                     input_shape=X_train.shape[1:]))
-
-# LSTM Cell
-model.add(LSTM(hidden_units,
-                    activation='relu',
-                    input_shape=X_train.shape[1:]))
-
-# GRU Cell
-# model.add(GRU(hidden_units,
-#                     activation='relu',
-#                     input_shape=X_train.shape[1:]))
+model.add(LSTM(rnn_units, activation='tanh', input_shape=[28,28]))
+# model.add(GRU(rnn_units,activation='tanh',input_shape=[28,28]))
 
 model.add(Dense(n_classes, activation='softmax'))
-model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=['accuracy'])
 
-# Step 3: Training
-model.fit(X_train, y_train,batch_size=batch_size, epochs=epochs,)
+# Step 3: Compile the Model
+model.compile(optimizer='adam',loss='categorical_crossentropy', metrics=['accuracy'])
 
-# Step 4: Evaluation
-score = model.evaluate(X_test, y_test, verbose=0)
-print('Test loss:', score[0])
+# Step 4: Train the Model
+model.fit(X_train, y_train,epochs=epochs,)
+
+# Step 5: Evaluate the Model
+score = model.evaluate(X_test, y_test)
 print('Test accuracy:', score[1])

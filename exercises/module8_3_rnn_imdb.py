@@ -7,8 +7,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 import numpy as np
 import tensorflow as tf
 from tensorflow.contrib import rnn
-from keras.datasets import imdb
-from keras.preprocessing import sequence
+from tensorflow.python.keras.datasets import imdb
+from tensorflow.python.keras.preprocessing import sequence
 from tflearn.data_utils import shuffle
 
 #Parameters

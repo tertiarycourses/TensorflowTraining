@@ -15,18 +15,16 @@ learning_rate = 0.5
 training_epochs = 2
 
 # Step 1: Pre-process the  Data
-from tensorflow.python.keras.datasets import mnist
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
-X_train = X_train.reshape(X_train.shape[0], 784)
-X_test = X_test.reshape(X_test.shape[0], 784)
-X_train = X_train.astype('float32')
-X_test = X_test.astype('float32')
-X_train /= 255
-X_test /= 255
-y_train = keras.utils.to_categorical(y_train, n_classes)
-y_test = keras.utils.to_categorical(y_test, n_classes)
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("mnist", one_hot=True)
 
-# Step 2: Build the  Network
+X_train = mnist.train.images
+y_train = mnist.train.labels
+X_test = mnist.test.images
+y_test = mnist.test.labels
+
+# Step 2: Define the Model
+
 L1 = 200
 L2 = 100
 L3 = 60
@@ -44,6 +42,8 @@ print(model.summary())
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
 # Step 4: Train Model
+
+
 model.fit(X_train, y_train,
           epochs=training_epochs,
           validation_data=(X_test, y_test),
@@ -54,5 +54,5 @@ score = model.evaluate(X_test, y_test)
 print("\nTraining Accuracy = ",score[1],"Loss",score[0])
 
 # Step 6: Save the Model
-model.save("mnist.h5")
-
+# model.save("mnist.h5")
+#

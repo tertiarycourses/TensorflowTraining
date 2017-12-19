@@ -14,6 +14,7 @@
 #       \x/x\x/         -- fully connected layer (softmax)                          W5 [200, 10]
 #        · · ·                                                                      Y [batch, 10]
 
+import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
@@ -21,8 +22,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 learning_rate = 0.01
 training_epochs = 2
 batch_size = 100
-
-import tensorflow as tf
 
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("mnist", one_hot=True,reshape=False,validation_size=0)
@@ -38,15 +37,15 @@ L3 = 12 # third convolutional filters
 L4 = 200 # fully connected neurons
 
 W1 = tf.Variable(tf.truncated_normal([5,5,1,L1], stddev=0.1))
-B1 = tf.Variable(tf.zeros([L1]))
+B1 = tf.Variable(tf.truncated_normal([L1],stddev=0.1))
 W2 = tf.Variable(tf.truncated_normal([5,5,L1,L2], stddev=0.1))
-B2 = tf.Variable(tf.zeros([L2]))
+B2 = tf.Variable(tf.truncated_normal([L2],stddev=0.1))
 W3 = tf.Variable(tf.truncated_normal([4,4,L2,L3], stddev=0.1))
-B3 = tf.Variable(tf.zeros([L3]))
+B3 = tf.Variable(tf.truncated_normal([L3],stddev=0.1))
 W4 = tf.Variable(tf.truncated_normal([7*7*L3,L4], stddev=0.1))
-B4 = tf.Variable(tf.zeros([L4]))
+B4 = tf.Variable(tf.truncated_normal([L4],stddev=0.1))
 W5 = tf.Variable(tf.truncated_normal([L4, 10], stddev=0.1))
-B5 = tf.Variable(tf.zeros([10]))
+B5 = tf.Variable(tf.truncated_normal([10],stddev=0.1))
 
 # Step 2: Setup Model
 Y1 = tf.nn.relu(tf.nn.conv2d(X, W1, strides=[1,1,1,1], padding='SAME') + B1)# output is 28x28
@@ -70,11 +69,11 @@ loss = tf.reduce_mean(
     tf.nn.softmax_cross_entropy_with_logits(logits=Ylogits, labels=y))
 
 # Step 4: Optimizer
-optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-#optimizer = tf.train.AdamOptimizer()
+#optimizer = tf.train.GradientDescentOptimizer(learning_rate)
+optimizer = tf.train.AdamOptimizer(0.01)
 train = optimizer.minimize(loss)
 
-# accuracy of the trained model, between 0 (worst) and 1 (best)
+# accuracy of the trained model
 is_correct = tf.equal(tf.argmax(y,1),tf.argmax(yhat,1))
 accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
 
