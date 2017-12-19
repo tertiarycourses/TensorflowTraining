@@ -38,9 +38,7 @@ model.add(Dense(n_classes, activation='softmax'))
 #print(model.summary())
 
 # Step 3: Compile the Model
-model.compile(optimizer='adam',
-              loss='binary_crossentropy',
-              metrics=['accuracy'])
+model.compile(optimizer='adam',loss='binary_crossentropy', metrics=['accuracy'])
 
 # Step 4: Training
 model.fit(X_train, y_train,

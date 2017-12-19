@@ -9,7 +9,6 @@ import tensorflow as tf
 from tensorflow.contrib import rnn
 from tensorflow.python.keras.datasets import imdb
 from tensorflow.python.keras.preprocessing import sequence
-from tflearn.data_utils import shuffle
 
 #Parameters
 training_epochs = 5
@@ -42,8 +41,8 @@ x_embedded = tf.unstack(x_embedded, axis=1)
 
 # Step 2: Setup Model
 
-LSTM = rnn.BasicLSTMCell(rnn_size)
-H, states = rnn.static_rnn(LSTM, x_embedded, dtype=tf.float32)
+cell = rnn.BasicLSTMCell(rnn_size)
+H, C = rnn.static_rnn(cell, x_embedded, dtype=tf.float32)
 
 Ylogits = tf.matmul(H[-1], W) + B
 yhat = tf.nn.softmax(Ylogits)

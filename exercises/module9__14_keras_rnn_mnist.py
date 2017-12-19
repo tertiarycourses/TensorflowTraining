@@ -26,12 +26,10 @@ y_test = mnist.test.labels
 model = Sequential()
 
 model.add(LSTM(rnn_units, activation='tanh', input_shape=[28,28]))
-# model.add(GRU(rnn_units,activation='tanh',input_shape=[28,28]))
-
 model.add(Dense(n_classes, activation='softmax'))
 
 # Step 3: Compile the Model
-model.compile(optimizer='adam',loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='adam',loss='binary_crossentropy', metrics=['accuracy'])
 
 # Step 4: Train the Model
 model.fit(X_train, y_train,epochs=epochs,)

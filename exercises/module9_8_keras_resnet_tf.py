@@ -21,9 +21,6 @@ x = image.img_to_array(img)
 x = np.expand_dims(x, axis=0)
 
 # Step 2: Load Pre-trained Model
-
-# Load Keras' ResNet50 model that was pre-trained against the ImageNet database
-# model = ResNet50(weights='imagenet', include_top=True, input_tensor=None, input_shape=None)
 model = ResNet50()
 
 # Scale the input image to the range used in the trained network

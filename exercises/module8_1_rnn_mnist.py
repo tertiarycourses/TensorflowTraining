@@ -26,8 +26,7 @@ B = tf.Variable(tf.truncated_normal([10],stddev=0.1))
 # Step 2: Setup Model
 inp = tf.unstack(X, axis=1)
 
-cell = rnn.BasicLSTMCell(rnn_size) # LSTM Cell
-#cell = rnn.GRUCell(rnn_size) # GRU Cell
+cell = rnn.BasicLSTMCell(rnn_size)
 H, C = rnn.static_rnn(cell, inp, dtype=tf.float32)
 
 Ylogits = tf.matmul(H[-1], W) + B
