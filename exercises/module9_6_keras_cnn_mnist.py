@@ -1,13 +1,13 @@
 # Module 9 Keras
 # CNN Model on MNIST dataaset
 
-from tensorflow.python import keras
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense,Dropout,Flatten
 from tensorflow.python.keras.layers import Conv2D, MaxPooling2D
 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+os.environ['TF_ENABLE_WINOGRAD_NONE_USED']='1'
 
 # Parameters
 n_classes = 10
@@ -40,11 +40,12 @@ model.add(Dense(n_classes, activation='softmax'))
 # Step 3: Compile the Model
 model.compile(optimizer='adam',loss='binary_crossentropy', metrics=['accuracy'])
 
-# Step 4: Training
-model.fit(X_train, y_train,
-          epochs=training_epochs,
-          validation_data=[X_test,y_test])
+# Step 4: Train the Model
+model.fit(X_train, y_train, epochs=training_epochs, validation_data=[X_test,y_test])
 
-# Step 4: Evaluation
-score = model.evaluate(X_test, y_test)
-print('Test accuracy:', score[1])
+# Step 5: Evaluate the Model
+loss,acc = model.evaluate(X_test, y_test)
+print('Test accuracy:', acc)
+
+# Step 6: Save the Model
+model.save("cnn_mnist.h5")

@@ -1,4 +1,4 @@
-# Module 4: Simple TF Model
+# Module 4: Machine Learning using Tensorflow
 # Simple TF model on MINST dataset
 
 import tensorflow as tf

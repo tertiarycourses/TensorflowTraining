@@ -2,26 +2,24 @@
 # CNN model with dropout for MNIST dataset
 
 # CNN structure:
-# · · · · · · · · · ·      input data                                               X  [batch, 28, 28, 1]
-# @ @ @ @ @ @ @ @ @ @   -- conv. layer 5x5x1x4  stride 1                            W1 [5, 5, 1, 4]
-# ∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶                                                               Y1 [batch, 28, 28, 4]
-#   @ @ @ @ @ @ @ @     -- conv. layer 5x5x4x8  with max pooling stride 2           W2 [5, 5, 4, 8]
-#   ∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶                                                                 Y2 [batch, 14, 14, 8]
-#     @ @ @ @ @ @       -- conv. layer 4x4x8x12 stride 2 with max pooling stride 2  W3 [4, 4, 8, 12]
-#     ∶∶∶∶∶∶∶∶∶∶∶                                                                   Y3 [batch, 7, 7, 12]
-#      \x/x\x\x/        -- fully connected layer (relu)                             W4 [7*7*12, 200]
-#       · · · ·                                                                     Y4 [batch, 200]
-#       \x/x\x/         -- fully connected layer (softmax)                          W5 [200, 10]
-#        · · ·                                                                      Y [batch, 10]
+# · · · · · · · · · ·      28x28 input data
+# @ @ @ @ @ @ @ @ @ @   -- 5x5x1x4 conv. layer
+#   @ @ @ @ @ @ @ @     -- 3x3x4x8 conv. layer with 2x2 max pooling
+#     @ @ @ @ @ @       -- 3x3x8x12  conv. layer with 2x2 max pooling
+#      \x/x\x\x/        -- 200 fully connected layer
+#       \x/x\x/         -- 10 fully connected layer
+
 
 import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+os.environ['TF_ENABLE_WINOGRAD_NONE_USED']='1'
 
 # Hyper Parameters
 learning_rate = 0.01
-training_epochs = 2
+training_epochs = 1
 batch_size = 100
+tf.set_random_seed(25)
 
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("mnist", one_hot=True,reshape=False,validation_size=0)
@@ -38,9 +36,9 @@ L4 = 200 # fully connected neurons
 
 W1 = tf.Variable(tf.truncated_normal([5,5,1,L1], stddev=0.1))
 B1 = tf.Variable(tf.truncated_normal([L1],stddev=0.1))
-W2 = tf.Variable(tf.truncated_normal([5,5,L1,L2], stddev=0.1))
+W2 = tf.Variable(tf.truncated_normal([3,3,L1,L2], stddev=0.1))
 B2 = tf.Variable(tf.truncated_normal([L2],stddev=0.1))
-W3 = tf.Variable(tf.truncated_normal([4,4,L2,L3], stddev=0.1))
+W3 = tf.Variable(tf.truncated_normal([3,3,L2,L3], stddev=0.1))
 B3 = tf.Variable(tf.truncated_normal([L3],stddev=0.1))
 W4 = tf.Variable(tf.truncated_normal([7*7*L3,L4], stddev=0.1))
 B4 = tf.Variable(tf.truncated_normal([L4],stddev=0.1))
@@ -50,17 +48,17 @@ B5 = tf.Variable(tf.truncated_normal([10],stddev=0.1))
 # Step 2: Setup Model
 Y1 = tf.nn.relu(tf.nn.conv2d(X, W1, strides=[1,1,1,1], padding='SAME') + B1)# output is 28x28
 Y2 = tf.nn.relu(tf.nn.conv2d(Y1, W2, strides=[1,1,1,1], padding='SAME') + B2)
-Y2 = tf.nn.max_pool(Y2, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME') # output is 14x14
 #Y2= tf.nn.dropout(Y2, pkeep)
+Y2 = tf.nn.max_pool(Y2, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME') # output is 14x14
 Y3 = tf.nn.relu(tf.nn.conv2d(Y2, W3, strides=[1,1,1,1], padding='SAME') + B3)
-Y3 = tf.nn.max_pool(Y3, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME') # output is 7x7
 #Y3= tf.nn.dropout(Y3, pkeep)
+Y3 = tf.nn.max_pool(Y3, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME') # output is 7x7
 
 # Flatten the third convolution for the fully connected layer
 YY = tf.reshape(Y3, shape=[-1, 7 * 7 * L3])
 
 Y4 = tf.nn.relu(tf.matmul(YY, W4) + B4)
-#YY4 = tf.nn.dropout(Y4, 0.3)
+#YY4 = tf.nn.dropout(Y4, pkeep)
 Ylogits = tf.matmul(Y4, W5) + B5
 yhat = tf.nn.softmax(Ylogits)
 
@@ -70,7 +68,7 @@ loss = tf.reduce_mean(
 
 # Step 4: Optimizer
 #optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-optimizer = tf.train.AdamOptimizer(0.01)
+optimizer = tf.train.AdamOptimizer(learning_rate)
 train = optimizer.minimize(loss)
 
 # accuracy of the trained model
@@ -86,11 +84,14 @@ for epoch in range(training_epochs):
     num_batches = int(mnist.train.num_examples / batch_size)
     for i in range(num_batches):
         batch_X, batch_y = mnist.train.next_batch(batch_size)
-        train_data = {X: batch_X, y: batch_y, pkeep: 0.5}
+        #train_data = {X: batch_X, y: batch_y, pkeep: 0.5}
+        train_data = {X: batch_X, y: batch_y}
         sess.run(train, feed_dict=train_data)
         print(epoch * num_batches + i + 1, "Training accuracy =", sess.run(accuracy, feed_dict=train_data),
           "Loss =", sess.run(loss, feed_dict=train_data))
 
 # Step 6: Evaluation
-test_data = {X:mnist.test.images,y:mnist.test.labels, pkeep: 1.0}
+#test_data = {X:mnist.test.images,y:mnist.test.labels, pkeep: 1}
+test_data = {X:mnist.test.images,y:mnist.test.labels}
 print("Testing Accuracy = ", sess.run(accuracy, feed_dict = test_data))
+

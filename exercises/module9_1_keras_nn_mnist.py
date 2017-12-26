@@ -41,18 +41,13 @@ print(model.summary())
 # Step 3: Compile the Model
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
-# Step 4: Train Model
+# Step 4: Train the Model
+model.fit(X_train, y_train,epochs=training_epochs, validation_data=(X_test, y_test), shuffle=True)
 
-
-model.fit(X_train, y_train,
-          epochs=training_epochs,
-          validation_data=(X_test, y_test),
-          shuffle=True)
-
-# Step 5: Evaluation
-score = model.evaluate(X_test, y_test)
-print("\nTraining Accuracy = ",score[1],"Loss",score[0])
+# Step 5: Evaluate the Model
+loss,acc = model.evaluate(X_test, y_test)
+print("\nTraining Accuracy = ",acc)
 
 # Step 6: Save the Model
-# model.save("mnist.h5")
-#
+model.save("mnist.h5")
+

@@ -20,15 +20,15 @@ y_test = mnist.test.labels
 # print(X_test.shape)
 # print(y_test.shape)
 
-# def show_digit(index):
-#     label = y_train[index].argmax(axis=0)
-#     image = X_train[index].reshape([28,28])
-#     plt.title('Digit : {}'.format(label))
-#     plt.imshow(image, cmap='gray_r')
-#     plt.show()
-#
-#
-# show_digit(1)
+def show_digit(index):
+    label = y_train[index].argmax(axis=0)
+    image = X_train[index].reshape([28,28])
+    plt.title('Digit : {}'.format(label))
+    plt.imshow(image, cmap='gray_r')
+    plt.show()
+
+
+show_digit(1)
 #
 #
 # # batch_X, batch_Y = mnist.train.next_batch(100)
