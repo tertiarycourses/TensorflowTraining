@@ -93,4 +93,4 @@ for i in range(int(X_test.shape[0] / batch_size)):
 print("Testing Accuracy/Loss = ", sess.run(tf.reduce_mean(acc)))
 
 saver = tf.train.Saver()
-saver.save(sess, "./tmp_cnn_cifar/cifar.ckpt")
+saver.save(sess, "./models/tmp_cnn_cifar/cifar.ckpt")

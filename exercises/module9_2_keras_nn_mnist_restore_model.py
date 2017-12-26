@@ -8,7 +8,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 # Step 1: Load the Model
-model = load_model('mnist.h5')
+model = load_model('./models/mnist.h5')
 
 # Step 2: Evaluate
 from tensorflow.examples.tutorials.mnist import input_data

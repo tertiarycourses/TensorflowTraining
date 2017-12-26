@@ -8,7 +8,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 os.environ['TF_ENABLE_WINOGRAD_NONE_USED']='1'
 
 # Step 1: Load the Model
-model = load_model('cnn_cifar.h5')
+model = load_model('./models/cnn_cifar.h5')
 
 # Step 2: Evaluation
 

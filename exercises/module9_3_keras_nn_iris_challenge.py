@@ -54,4 +54,4 @@ score = model.evaluate(X_test, y_test)
 print("\nTraining Accuracy = ",score[1],"Loss",score[0])
 
 # Step 6: Save the model
-model.save("iris.h5")
+model.save("./models/iris.h5")

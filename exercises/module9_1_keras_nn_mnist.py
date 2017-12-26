@@ -49,5 +49,5 @@ loss,acc = model.evaluate(X_test, y_test)
 print("\nTraining Accuracy = ",acc)
 
 # Step 6: Save the Model
-model.save("mnist.h5")
+model.save("./models/mnist.h5")
 

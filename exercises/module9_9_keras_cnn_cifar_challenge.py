@@ -49,4 +49,4 @@ loss,acc = model.evaluate(X_test, y_test)
 print('Test accuracy:', acc)
 
 # Step 6: Save the Model
-model.save("cnn_cifar.h5")
+model.save("./models/cnn_cifar.h5")

@@ -7,8 +7,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 # Step 1: Restore Graph
 sess = tf.Session()
-saver = tf.train.import_meta_graph('./tmp_nn/mnist.ckpt.meta')
-saver.restore(sess,tf.train.latest_checkpoint('./tmp_nn'))
+saver = tf.train.import_meta_graph('./models/tmp_nn/mnist.ckpt.meta')
+saver.restore(sess,tf.train.latest_checkpoint('./models/tmp_nn'))
 
 # Step 2: Restore Input and Output
 graph = tf.get_default_graph()

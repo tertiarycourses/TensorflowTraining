@@ -65,7 +65,7 @@ class ImageGenerator:
 
         model = load_model('mnist.h5')
 
-        img= Image.open('mnist.jpg')
+        img= Image.open('./models/mnist.jpg')
         X_test = np.asarray(img)
         X_test = X_test.astype('float32')
         X_test = (255.0 - X_test)/255.0

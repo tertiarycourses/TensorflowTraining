@@ -63,7 +63,7 @@ class ImageGenerator:
 
     def minst_nn_pred(self):
 
-        model = load_model('cnn_mnist.h5')
+        model = load_model('./models/cnn_mnist.h5')
 
         img= Image.open('mnist.jpg')
         X_test = np.asarray(img)

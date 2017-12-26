@@ -94,4 +94,4 @@ test_data = {X:mnist.test.images,y:mnist.test.labels}
 print("Testing Accuracy = ", sess.run(accuracy, feed_dict = test_data))
 
 saver = tf.train.Saver()
-saver.save(sess, "./tmp_cnn/mnist.ckpt")
+saver.save(sess, "./models/tmp_cnn/mnist.ckpt")

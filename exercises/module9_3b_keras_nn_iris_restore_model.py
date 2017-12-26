@@ -4,7 +4,7 @@
 from tensorflow.python.keras.models import load_model
 
 # Step 1: Restore Model
-model = load_model('iris.h5')
+model = load_model('./models/iris.h5')
 
 # Step 2: Evaluate
 import numpy as np

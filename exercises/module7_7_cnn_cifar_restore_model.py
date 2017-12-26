@@ -8,8 +8,8 @@ os.environ['TF_ENABLE_WINOGRAD_NONE_USED']='1'
 
 # Step 1: Restore Graph
 sess = tf.Session()
-saver = tf.train.import_meta_graph('./tmp_cnn_cifar/cifar.ckpt.meta')
-saver.restore(sess,tf.train.latest_checkpoint('./tmp_cnn_cifar'))
+saver = tf.train.import_meta_graph('./models/tmp_cnn_cifar/cifar.ckpt.meta')
+saver.restore(sess,tf.train.latest_checkpoint('./models/tmp_cnn_cifar'))
 
 # Step 2: Restore Input and Output
 graph = tf.get_default_graph()
